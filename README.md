@@ -22,11 +22,11 @@ Built for **The Agent Harness Hackathon** (WeMakeDevs x TrueFoundry x Qodo).
 
 ## Prerequisites
 
-- Node.js >= 22.14
-- npm
-- A free [OpenRouter](https://openrouter.ai) API key
-- A [GitHub personal access token](https://github.com/settings/tokens) (for commit history)
-- TrueForge: `npx @truefoundry/trueforge`
+- Node.js >= 22.14 ([download](https://nodejs.org))
+- npm (comes with Node.js)
+- A free [OpenRouter](https://openrouter.ai) API key (sign up, no credit card needed)
+- A [GitHub personal access token](https://github.com/settings/tokens) with `repo` scope (for commit history analysis)
+- TrueForge: `npx @truefoundry/trueforge` (downloaded on first run, ~30s)
 
 ## Quick Start
 
@@ -54,6 +54,8 @@ Open http://localhost:8790 in your browser.
 
 ### 4. Configure TrueForge (first time only)
 
+> Open http://localhost:8790 after starting TrueForge. All configuration is done in the web UI.
+
 **Add OpenRouter as a model provider:**
 1. Go to Settings → Models
 2. Add provider: OpenAI-compatible
@@ -67,6 +69,8 @@ Open http://localhost:8790 in your browser.
 2. Add connector: Stdio
 3. Name: `incident-responder`
 4. Command: `npx tsx <full-path-to-repo>/mcp-server/index.ts`
+   - On Windows: `npx tsx D:\path\to\incident-responder-agent\mcp-server\index.ts`
+   - On macOS/Linux: `npx tsx /path/to/incident-responder-agent/mcp-server/index.ts`
 5. Save
 
 **Add GitHub MCP server (optional, for commit analysis):**

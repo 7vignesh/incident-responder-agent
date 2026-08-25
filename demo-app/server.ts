@@ -11,6 +11,22 @@ function isErrorForced(): boolean {
 
 app.use(express.json());
 
+// Graceful error handling for malformed JSON
+app.use((err: any, _req: any, res: any, next: any) => {
+  if (err.type === "entity.parse.failed") {
+    log({
+      level: "warn",
+      endpoint: _req.path,
+      method: _req.method,
+      statusCode: 400,
+      message: "Malformed JSON in request body",
+    });
+    res.status(400).json({ error: "Invalid JSON in request body" });
+    return;
+  }
+  next(err);
+});
+
 // Health check - always works
 app.get("/health", (_req, res) => {
   const start = Date.now();
@@ -74,7 +90,20 @@ app.get("/products", (_req, res) => {
   res.json(products);
 });
 
-app.listen(PORT, () => {
+const PORT = parseInt(process.env.DEMO_APP_PORT || "3001", 10);
+
+const server = app.listen(PORT, () => {
   console.log(`Demo app running on http://localhost:${PORT}`);
   console.log(`FORCE_ERROR=${process.env.FORCE_ERROR || "false"}`);
+});
+
+// Graceful shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received, shutting down gracefully...");
+  server.close(() => process.exit(0));
+});
+
+process.on("SIGINT", () => {
+  console.log("SIGINT received, shutting down...");
+  server.close(() => process.exit(0));
 });

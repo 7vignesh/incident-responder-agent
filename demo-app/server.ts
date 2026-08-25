@@ -90,8 +90,6 @@ app.get("/products", (_req, res) => {
   res.json(products);
 });
 
-const PORT = parseInt(process.env.DEMO_APP_PORT || "3001", 10);
-
 const server = app.listen(PORT, () => {
   console.log(`Demo app running on http://localhost:${PORT}`);
   console.log(`FORCE_ERROR=${process.env.FORCE_ERROR || "false"}`);

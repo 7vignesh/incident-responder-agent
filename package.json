@@ -8,6 +8,7 @@
     "build": "tsc",
     "demo-app": "tsx demo-app/server.ts",
     "mcp-server": "tsx mcp-server/index.ts",
+    "mcp-server-http": "tsx mcp-server/http-server.ts",
     "trigger-incident": "tsx scripts/trigger-incident.ts",
     "reset-incident": "tsx scripts/reset-incident.ts",
     "seed-logs": "tsx scripts/seed-logs.ts",

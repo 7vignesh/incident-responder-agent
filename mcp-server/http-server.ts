@@ -132,8 +132,6 @@ function createMcpServer() {
 }
 
 async function main() {
-  const mcpServer = createMcpServer();
-
   const httpServer = createServer(async (req, res) => {
     // CORS headers for TrueForge
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -147,8 +145,14 @@ async function main() {
       return;
     }
 
-    // Create a new transport for each connection
+    // Create a fresh server + transport per request (stateless mode).
+    // The SDK forbids reusing one server across multiple transports.
+    const mcpServer = createMcpServer();
     const transport = new StreamableHTTPServerTransport();
+    res.on("close", () => {
+      transport.close();
+      mcpServer.close();
+    });
     await mcpServer.connect(transport);
 
     // Handle the request through the transport
